@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--    used the color picker -->
+    <!--    https://imagecolorpicker.com/-->
+
+    <color name="light_4">#CCD5AE</color>
+    <color name="light_3">#E9EDC9</color>
+    <color name="light_2">#FEFAE0</color>
+    <color name="light_1">#FAEDCD</color>
+
+    <color name="dark_4">#557153</color>
+    <color name="dark_3">#7D8F69</color>
+    <color name="dark_2">#A9AF7E</color>
+    <color name="dark_1">#E6E5A3</color>
 </resources>

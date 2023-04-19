@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    style="@style/Main_background">
 
 
     <LinearLayout
@@ -15,7 +16,7 @@
         <LinearLayout
             android:id="@+id/one_dice_layout"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_weight="7"
             android:orientation="horizontal"
             android:layout_marginRight="10dp"
@@ -37,7 +38,7 @@
         <LinearLayout
             android:id="@+id/two_dice_layout"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
             android:layout_weight="7"
             android:orientation="horizontal"
             android:layout_marginRight="10dp"
@@ -94,9 +95,12 @@
                 android:textSize="10sp"> </ToggleButton>
 
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"></TextView>
 
 
-1
             <Button
                 android:id="@+id/roll_button"
                 android:text="roll"
@@ -105,49 +109,113 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:textSize="10sp"
+                android:background="@drawable/border"
 
                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:id="@+id/definedFacesSwitch"
+                android:text="define your face?">
+            </Switch>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/num_sides_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/new_die_sides_et"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="new number of sides"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/add_die_sides_button"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/border"
+                    android:text="add" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/num_sides_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></Spinner>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            >
-            <EditText
-                android:id="@+id/new_die_sides_et"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:hint="new number of sides"
-                android:inputType="number"
-                />
-            <Button
-                android:id="@+id/add_die_sides_button"
-                android:text="add"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:id="@+id/add_sides_layout">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="myVals">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/defined_face_tv"
+                    android:text="the face list"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:textSize="10sp"
+                    >
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
 
+                <EditText
+                    android:id="@+id/defined_faces_input"
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:inputType="number"></EditText>
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/add_die_face_button"
+                    android:text="ADD">
 
+                </Button>
+
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            >
-            <Spinner
-                android:id="@+id/num_sides_spinner"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                ></Spinner>
 
-        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

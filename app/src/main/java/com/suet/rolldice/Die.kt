@@ -12,6 +12,7 @@ class Die(val numSide: Int ,val name: String){
         currentSideUp = (1..numSide).random()
         //roll()
 
+
     }
 
     //with 1 parameter - the number of side, the name begins with "d"
@@ -39,6 +40,11 @@ class Die(val numSide: Int ,val name: String){
     // to roll the dice (change the current side up)
     fun roll() : Int {
         this.currentSideUp = (1..numSide).random()
+        return this.currentSideUp
+    }
+
+    fun roll(faceList: List<Int>) : Int {
+        this.currentSideUp = (faceList).random()
         return this.currentSideUp
     }
 
