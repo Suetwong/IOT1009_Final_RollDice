@@ -6,11 +6,8 @@
     <string name="define_face_title">define your face?</string>
     <string name="num_sides_hint">new number of sides</string>
     <string name="roll_name">roll</string>
-    <string name="myVal_title">my face value :</string>
-    <string name="face_list_title">my face value list </string>
+    <string name="myVal_title">faces :</string>
+    <string name="face_list_title">my face values: list </string>
     <string name="one_die">1 die</string>
     <string name="two_die">2 dice</string>
-
-
-
 </resources>

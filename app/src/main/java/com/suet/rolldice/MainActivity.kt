@@ -49,22 +49,26 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
         // using a shared preferences to save and retrieve data in the form of key,value pair.
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
 
+        // array adpater to absorb a list of the # of sides
         arrayAdapter = ArrayAdapter<Int>(this, android.R.layout.simple_list_item_1 )
         binding.numSidesSpinner.adapter = arrayAdapter
         for(element in basicNumSides){
             arrayAdapter.add(element)
         }
 
+        // buttons and spinner listeners
         binding.rollButton.setOnClickListener(this)
         binding.addDieSidesButton.setOnClickListener(this)
         binding.numSidesSpinner.onItemSelectedListener = this
         binding.addDieFaceButton.setOnClickListener(this)
 
+        // listen the changes if the user would add more options for die sides
         binding.definedFacesSwitch.setOnCheckedChangeListener { _, isChecked ->
             customDieFace = isChecked
             updateDisplay()
         }
 
+        // listen the changes if the user would like to store the list when resume
         binding.storeListSwitch.setOnCheckedChangeListener { _, isChecked ->
             storeList = isChecked
             Log.i("onclick", "store list : $isChecked")
@@ -79,14 +83,17 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
         }
     }
 
+    // the settings when user resume the application
     override fun onResume() {
         super.onResume()
+        // if user chose to reuse the defined face list
         if(sharedPrefs.getBoolean("storeListPref",false)) {
             binding.definedFacesSwitch.isChecked=true
             customDieFace=true
             val stringList = sharedPrefs.getString("myVals", "")
             dieFaceList = stringList?.split(" ")?.map { it.toInt() }?.toMutableList()!!
         }
+        //otherwise, clear the list
         else
         {
             dieFaceList.clear()
@@ -118,7 +125,6 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
-
         // initiate the day night mode button shown as an icon instead of default title
         val dayNightButton = menu.findItem(day_night_mode)
         updateIcon(dayNightButton)
@@ -144,7 +150,7 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
 
                 if(dayMode) {
                     updateIcon(item)
-                    // crushed when changing the
+                    // crushed when switch the mode
                     //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     Toast.makeText(this, "Day", Toast.LENGTH_SHORT).show()
                 }
@@ -153,29 +159,27 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
                     //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     Toast.makeText(this, "Night", Toast.LENGTH_SHORT).show()
                 }
-
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
-
+    // init die when choosing new number of sides
     private fun initDie() {
         die1 = Die(this.currentNumSide)
         if (!rollingOneDie){
             die2 = Die(this.currentNumSide)
         }
-
     }
 
+
     private fun updateDisplay() {
-
-
+        // convert the user's defined faces and display on the textview
         if(dieFaceList.isNotEmpty()){
             dieFaceListAsString = dieFaceList.joinToString(" ")
             binding.definedFaceTv.text = dieFaceListAsString
         }
 
+        // to show the layout whether to roll a "customized die" or "designated number of sizes"
         if(customDieFace){
             binding.numSidesLayout.visibility =View.GONE
             binding.addSidesLayout.visibility =View.VISIBLE
@@ -185,15 +189,12 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
             binding.addSidesLayout.visibility =View.GONE
         }
 
+        // to show the number of rolling die/dice
         if (rollingOneDie){
             binding.dieOneResultIn1Layout.text = die1.currentSideUp.toString()
-            //binding.dieOneResult.setText("0")
-            //binding.dieTwoResult.setText("0")
-
-            binding.oneDiceLayout.visibility =View.VISIBLE
+             binding.oneDiceLayout.visibility =View.VISIBLE
             binding.twoDiceLayout.visibility =View.GONE
         } else {
-            //binding.dieOneResultIn1Layout.setText("0")
             binding.dieOneResult.text = die1.currentSideUp.toString()
             binding.dieTwoResult.text = die2.currentSideUp.toString()
             binding.oneDiceLayout.visibility =View.GONE
@@ -205,7 +206,8 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
         Log.i("onClick", "A button is pressed")
 
         when (p0?.id) {
-
+            // when the add sides button is clicked, add the new choice in the spinner
+            // that allow user to roll with the # of faces
             R.id.add_die_sides_button ->{
                 if (binding.newDieSidesEt.text.isNotBlank()) {
                     arrayAdapter.add(binding.newDieSidesEt.text.toString().toInt())
@@ -216,6 +218,7 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
                 }
             }
 
+            // when the new face is added
             R.id.add_die_face_button->{
                 if (binding.definedFacesInput.text.isNotBlank()) {
                     dieFaceList.add(binding.definedFacesInput.text.toString().toInt())
@@ -223,6 +226,7 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
                     updateDisplay()
                 }
             }
+            // when user is rolling the die
             R.id.roll_button-> {
                 if (customDieFace) {
                     initDie()
@@ -247,6 +251,7 @@ class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , Ad
         }
     }
 
+    // user selected the number of sides die
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         Log.i("selected", p0?.getItemAtPosition(p2).toString())
         currentNumSide = p0?.getItemAtPosition(p2).toString().toInt()

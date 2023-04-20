@@ -5,6 +5,4 @@
     <item android:id="@+id/day_night_mode"
         app:showAsAction="ifRoom"
         android:title="day" />
-
-
 </menu>
