@@ -4,28 +4,41 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-
-
+import com.suet.rolldice.R.id.day_night_mode
 import com.suet.rolldice.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnItemSelectedListener{
+class MainActivity<Item : View> : AppCompatActivity(), View.OnClickListener , AdapterView.OnItemSelectedListener{
     private lateinit var binding: ActivityMainBinding
-    public lateinit var die1 : Die
-    public lateinit var die2 : Die
-    public var rollingOneDie : Boolean = true
+    private lateinit var die1 : Die
+    private lateinit var die2 : Die
+
+    // flags to indicate corresponding actions
+    private var rollingOneDie : Boolean = true
+    private var customDieFace : Boolean = true
+    private var storeList: Boolean = true
+    private var dayMode: Boolean = true
+
+    // beginning setting for defining the number of die faces
     private lateinit var arrayAdapter: ArrayAdapter<Int>
-    public  val basicNumSides = arrayOf(4,6,8,10,12,20)
-    public var currentNumSide : Int = basicNumSides[0]
-    public var dieFaceList = mutableListOf<Int>()
-    public lateinit var listAsString :String
-    public var customDieFace : Boolean = true
-    public var storeList: Boolean = true
+    private val basicNumSides = arrayOf(4,6,8,10,12,20)
+    private var currentNumSide : Int = basicNumSides[0]
+
+    // a empty list for user to customize the die faces
+    private var dieFaceList = mutableListOf<Int>()
+    private lateinit var dieFaceListAsString :String
+
+    // a shared preference to store key-value data for re-use the customized die faces
     private lateinit var sharedPrefs: SharedPreferences
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,36 +57,41 @@ class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnI
 
         binding.rollButton.setOnClickListener(this)
         binding.addDieSidesButton.setOnClickListener(this)
-        binding.numSidesSpinner.setOnItemSelectedListener(this)
+        binding.numSidesSpinner.onItemSelectedListener = this
         binding.addDieFaceButton.setOnClickListener(this)
-        binding.definedFacesSwitch.setOnCheckedChangeListener(){ _, isChecked ->
+
+        binding.definedFacesSwitch.setOnCheckedChangeListener { _, isChecked ->
             customDieFace = isChecked
             updateDisplay()
         }
 
-
-        binding.storeListSwitch.setOnCheckedChangeListener(){ _, isChecked ->
+        binding.storeListSwitch.setOnCheckedChangeListener { _, isChecked ->
             storeList = isChecked
+            Log.i("onclick", "store list : $isChecked")
         }
 
-        // use the toggle button to toggle how many die/dice is/are rolling
+        // use the toggle button to toggle the number of  die/dice
         binding.numDieTbutton.setOnCheckedChangeListener { _, isChecked ->
             rollingOneDie = isChecked
-            Log.i("Toggling", "Now turned " + isChecked.toString())
+            Log.i("Toggling", "Now turned $isChecked")
             initDie()
             updateDisplay()
         }
-
-        // sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-
     }
 
     override fun onResume() {
         super.onResume()
-        val stringList = sharedPrefs.getString("myVals", "")
-        dieFaceList = stringList?.split(" ")?.map { it.toInt() }?.toMutableList()!!
-
-
+        if(sharedPrefs.getBoolean("storeListPref",false)) {
+            binding.definedFacesSwitch.isChecked=true
+            customDieFace=true
+            val stringList = sharedPrefs.getString("myVals", "")
+            dieFaceList = stringList?.split(" ")?.map { it.toInt() }?.toMutableList()!!
+        }
+        else
+        {
+            dieFaceList.clear()
+            customDieFace = false
+        }
         //binding.definedFaceTv.setText(stringList)
         updateDisplay()
 
@@ -82,18 +100,64 @@ class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnI
     override fun onPause() {
         // create an editor to store data
         val editor = sharedPrefs.edit()
+        Log.i("onClick", "storeListPref$storeList")
         if (storeList) {
-            editor.putString("myVals", listAsString)
+            editor.putBoolean("storeListPref",true)
+            editor.putString("myVals", dieFaceListAsString)
         }
         // otherwise, the data is not going to be stored
         else {
-            // cleared the editor and restore the perference setting
+            // cleared the editor and restore the preference setting
             editor.clear()
         }
 
         // apply the editor
         editor.apply()
         super.onPause()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.settings_menu, menu)
+
+        // initiate the day night mode button shown as an icon instead of default title
+        val dayNightButton = menu.findItem(day_night_mode)
+        updateIcon(dayNightButton)
+        return true
+    }
+
+    private fun updateIcon(menuItem:MenuItem){
+        if (dayMode) {
+            menuItem.setIcon(R.drawable.ic_day) // set the flagged icon
+        } else {
+            menuItem.setIcon(R.drawable.ic_night) // set the normal icon
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("ItemID", item.itemId.toString())
+
+        when(item.itemId){
+
+            day_night_mode -> {
+                dayMode = !dayMode
+
+
+                if(dayMode) {
+                    updateIcon(item)
+                    // crushed when changing the
+                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    Toast.makeText(this, "Day", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    updateIcon(item)
+                    //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    Toast.makeText(this, "Night", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initDie() {
@@ -105,9 +169,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnI
     }
 
     private fun updateDisplay() {
+
+
         if(dieFaceList.isNotEmpty()){
-            listAsString = dieFaceList.joinToString(" ")
-            binding.definedFaceTv.setText(listAsString)
+            dieFaceListAsString = dieFaceList.joinToString(" ")
+            binding.definedFaceTv.text = dieFaceListAsString
         }
 
         if(customDieFace){
@@ -120,18 +186,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnI
         }
 
         if (rollingOneDie){
-            binding.dieOneResultIn1Layout.setText(die1.currentSideUp.toString())
+            binding.dieOneResultIn1Layout.text = die1.currentSideUp.toString()
             //binding.dieOneResult.setText("0")
             //binding.dieTwoResult.setText("0")
 
             binding.oneDiceLayout.visibility =View.VISIBLE
             binding.twoDiceLayout.visibility =View.GONE
-
-
         } else {
             //binding.dieOneResultIn1Layout.setText("0")
-            binding.dieOneResult.setText(die1.currentSideUp.toString())
-            binding.dieTwoResult.setText(die2.currentSideUp.toString())
+            binding.dieOneResult.text = die1.currentSideUp.toString()
+            binding.dieTwoResult.text = die2.currentSideUp.toString()
             binding.oneDiceLayout.visibility =View.GONE
             binding.twoDiceLayout.visibility =View.VISIBLE
         }
@@ -141,7 +205,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnI
         Log.i("onClick", "A button is pressed")
 
         when (p0?.id) {
-
 
             R.id.add_die_sides_button ->{
                 if (binding.newDieSidesEt.text.isNotBlank()) {
@@ -158,8 +221,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener , AdapterView.OnI
                     dieFaceList.add(binding.definedFacesInput.text.toString().toInt())
                     binding.definedFacesInput.text.clear()
                     updateDisplay()
-
-
                 }
             }
             R.id.roll_button-> {

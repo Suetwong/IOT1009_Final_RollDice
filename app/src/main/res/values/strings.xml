@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">RollDice</string>
+    <string name="add">Add</string>
+    <string name="save_val_name">save myVal?</string>
+    <string name="starting_value">0</string>
+    <string name="define_face_title">define your face?</string>
+    <string name="num_sides_hint">new number of sides</string>
+    <string name="roll_name">roll</string>
+    <string name="myVal_title">my face value :</string>
+    <string name="face_list_title">my face value list </string>
+    <string name="one_die">1 die</string>
+    <string name="two_die">2 dice</string>
+
+
 
 </resources>

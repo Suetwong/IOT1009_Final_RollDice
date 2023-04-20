@@ -2,15 +2,37 @@
     <!-- Base application theme. -->
     <style name="Theme.RollDice" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/light_4</item>
+        <item name="colorPrimaryVariant">@color/dark_4</item>
+        <item name="colorOnPrimary">@color/dark_1</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/dark_4</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/dark_3</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name = "Main_background">
+        <item name="android:background">@color/dark_2</item>
+        <item name="android:textColor">@color/light_3</item>
+    </style>
+
+    <style name="DieText">
+        <item name="android:gravity">right</item>
+        <item name="android:textColor">@color/dark_3</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/dark_3</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="AddButtonStyle" parent="ButtonStyle">
+        <item name="android:text">@string/add</item>
+    </style>
+
+
 </resources>

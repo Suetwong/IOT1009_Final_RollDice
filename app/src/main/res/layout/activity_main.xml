@@ -21,8 +21,7 @@
                 android:id="@+id/store_list_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:checked="true"
-                android:text="save myVal?"
+                android:text="@string/save_val_name"
                 android:gravity="right"
                 >
             </Switch>
@@ -35,13 +34,11 @@
             android:layout_height="200dp"
             android:layout_weight="7"
             android:orientation="horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_margin="10dp"
+            >
 
             <TextView
-                android:text="0"
+                android:text="@string/starting_value"
                 android:id="@+id/die_one_result_in_1_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -57,14 +54,11 @@
             android:layout_height="200dp"
             android:layout_weight="7"
             android:orientation="horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             >
 
             <TextView
-                android:text="0"
+                android:text="@string/starting_value"
                 android:id="@+id/die_one_result"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -79,7 +73,7 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:text="0"
+                android:text="@string/starting_value"
                 android:id="@+id/die_two_result"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -90,54 +84,53 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="5"
             android:orientation="horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             >
 
             <ToggleButton
                 android:id="@+id/num_die_tbutton"
-                android:textOn="1 die"
-                android:textOff="2 dice"
+                android:textOn="@string/one_die"
+                android:textOff="@string/two_die"
                 android:checked="true"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+
                 android:gravity="center"
-                android:textSize="10sp"> </ToggleButton>
+                android:textSize="12sp"> </ToggleButton>
 
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"></TextView>
+                android:layout_weight="0.5" />
 
 
             <Button
                 android:id="@+id/roll_button"
-                android:text="roll"
+                android:text="@string/roll_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:textSize="10sp"
+                android:textSize="12sp"
+                style="@style/ButtonStyle"
                 android:background="@drawable/border"
 
                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:checked="true"
                 android:id="@+id/definedFacesSwitch"
-                android:text="define your face?">
+                android:text="@string/define_face_title">
             </Switch>
         </LinearLayout>
 
@@ -157,7 +150,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
-                    android:hint="new number of sides"
+                    android:hint="@string/num_sides_hint"
                     android:inputType="number" />
 
                 <Button
@@ -166,7 +159,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/border"
-                    android:text="add" />
+                    style="@style/AddButtonStyle"
+                     />
             </LinearLayout>
 
             <LinearLayout
@@ -176,7 +170,7 @@
                 <Spinner
                     android:id="@+id/num_sides_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></Spinner>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
 
@@ -190,31 +184,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:textSize="20sp"
                 >
 
                 <TextView
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:text="myVals">
+                    android:text="@string/myVal_title">
 
                 </TextView>
 
                 <TextView
                     android:id="@+id/defined_face_tv"
-                    android:text="the face list"
+                    android:text="@string/face_list_title"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:gravity="center"
-                    android:textSize="10sp"
+
+
                     >
                 </TextView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 >
-
 
                 <EditText
                     android:id="@+id/defined_faces_input"
@@ -225,7 +222,9 @@
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:id="@+id/add_die_face_button"
-                    android:text="ADD">
+                    android:text="@string/add"
+                    style="@style/ButtonStyle"
+                    android:background="@drawable/border">
 
                 </Button>
 
